@@ -6,3 +6,9 @@ lazy val root = (project in file("."))
   .settings(
     name := "Exercises441"
   )
+
+// https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common
+libraryDependencies += "org.apache.hadoop" % "hadoop-common" % "3.3.4"
+// https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-mapreduce-client-core
+libraryDependencies += "org.apache.hadoop" % "hadoop-mapreduce-client-core" % "3.3.4"
+libraryDependencies += "org.apache.hadoop" % "hadoop-mapreduce-client-jobclient" % "3.3.4"
