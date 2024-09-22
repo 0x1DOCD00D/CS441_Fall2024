@@ -5,7 +5,7 @@
 #### This Git repo contains the homework description that uses an open-source implementation of a [tokenizer toolkit JTokkit](https://github.com/knuddelsgmbh/jtokkit?tab=readme-ov-file) and [deeplearning4j](https://github.com/deeplearning4j/deeplearning4j) that is a suite of tools for deploying and training deep learning models using the JVM. Students may invest some time to learn how the use cases of JTokkit that are shown in [tests](https://github.com/knuddelsgmbh/jtokkit/tree/main/lib/src/test/java/com/knuddels/jtokkit), however, it is not required for completing this homework.
 
 ## Preliminaries
-As part of this first homework assignment students are going to learn how to create and manage Git project repository, create an application in Scala, create tests using widely popular Scalatest framework, and expand on the provided SBT build and run script for their applications. Your job as a student in this course is to create randomly generated graphs that represent big data, apply specially designed perturbation operators to produce modified graphs, parse and analyze them to determine differences between the original and perturbed graphs by processing them in the cloud using distributed big data analysis frameworks.
+As part of this first homework assignment students are going to learn how to create and manage Git project repository, create an application in Scala, create tests using widely popular Scalatest framework, and expand on the provided SBT build and run script for their applications. Your job as a student in this course is to learn to use a Map/Reduce framework in the cloud environment. To make this homework interesting I choose to implement various technologies by applying massively parallel computations in the cloud, and each year I choose a different one and the criteria for choosing a technology is its high market value in the current economy. That is, not only students learn cloud computing frameworks and mechanisms but they also increase their market value by learning a new hot technology for the current job market.
 
 First things first, if you haven't done so, you must create your account at [Github](https://github.com/), a Git repo management system. Please make sure that you write your name in your README.md in your repo as it is specified on the class roster. Since it is a large class, please use your UIC email address for communications and for signing your projects and you should avoid using emails from other accounts like funnybunny2003@gmail.com. As always, the homeworks class' Teams channel is the preferred way to exchange information and ask questions. If you don't receive a response within a few hours, please contact your TA or the professor by tagging our names. If you use emails it may be a case that your direct emails went to the spam folder.
 
@@ -15,15 +15,15 @@ In this and all consecutive homeworks you will use logging and configuration man
 
 From many example projects on Github you can see how to use Scala to create a fully functional (not imperative) implementation with subprojects and tests. As you see from the StackOverflow survey, knowledge of Scala is highly paid and in great demand, and it is expected that you pick it relatively fast, especially since it is tightly integrated with Java. I recommend using the book on [Programming in Scala Fourth and Fifth Editions by Martin Odersky et al](https://www.amazon.com/Programming-Scala-Fourth-Updated-2-13-ebook/dp/B082T2ZNJG). You can obtain this book using the academic subscription on [Safari Books Online](https://learning.oreilly.com/home-new/). There are many other books and resources available on the Internet to learn Scala. Those who know more about functional programming can use the book on [Functional Programming in Scala published in 2023 by Michael Pilquist, Rúnar Bjarnason, and Paul Chiusano](https://www.manning.com/books/functional-programming-in-scala-second-edition?new=true&experiment=C).
 
-When creating your Map/Reduce in Scala or CORBA program code in C++ you should avoid using **var**s and **while/for** loops that iterate over collections using [induction variables](https://en.wikipedia.org/wiki/Induction_variable). Instead, you should learn to use collection methods **map**, **flatMap**, **foreach**, **filter** and many others with lambda functions, which make your code linear and easy to understand as we studied it in class. Also, avoid mutable variables that expose the internal states of your modules at all cost. Points will be deducted for having unreasonable **var**s and inductive variable loops without explanation why mutation is needed in your code unless it is confined to method scopes - you can always do without using mutable states.
+When creating your Map/Reduce in Scala or CORBA program code in C++ or Python you should avoid using **var**s and **while/for** loops that iterate over collections using [induction variables](https://en.wikipedia.org/wiki/Induction_variable). Instead, you should learn to use collection methods **map**, **flatMap**, **foreach**, **filter** and many others with lambda functions, which make your code linear and easy to understand as we studied it in class. Also, avoid mutable variables that expose the internal states of your modules at all cost. Points will be deducted for having unreasonable **var**s and inductive variable loops without explanation why mutation is needed in your code unless it is confined to method scopes - you can always do without using mutable states.
 
 ## Overview
-All three homeworks are created under the general umbrella of a course project that allows students to create and train an LLM using cloud computing tools and frameworks, which is an extremely valuable skill in today's AI-driven economy. The first phase of the project is to build an LLM by preparing and sampling the input data and implementing the attention mechanism for a given LLM architecture whereas the second phase involves implementing the training loop and evaluating the resulting model. In this homework, you will create a distributed program for parallel processing of the large corpus of data starting with data embedding that is a term designating the conversion of input categorical text data into a vector format of the continuous real values and implement the attention mechanism for LLMs.
+All three homeworks are created under the general umbrella of a course project that allows students to create and train an LLM using cloud computing tools and frameworks, which is an extremely valuable skill in today's AI-driven economy. The first phase of the project is to build an LLM by preparing and sampling the input data and learning vector embeddings  that is a term designating the conversion of input categorical text data into a vector format of the continuous real values and implement the attention mechanism for LLMs whereas the second phase involves implementing the attention mechanism with a training loop using Spark and evaluating the resulting model. In this homework, you will create a distributed program for parallel processing of the large corpus of data starting with vector embedding.
 
 This and all future homework scripts are written using a retroscripting technique, in which the homework outlines are generally and loosely drawn, and the individual students improvise to create the implementation that fits their refined objectives. In doing so, students are expected to stay within the basic requirements of the homework while free to experiment. Asking questions is important to clarify the requirements or to solve problems, so please ask away at [MS Teams](https://teams.microsoft.com/l/team/19%3A9rv9jqRlilNpSrbWQYfv94QkA-KpnOg3B2xOy7RUpM01%40thread.tacv2/conversations?groupId=60ea78dc-5092-47cd-9117-2bd5a5e35d99&tenantId=e202cd47-7a56-4baa-99e3-e3b71a7c77dd)!
 
 ## Functionality
-Your homework assignment is to create a program for parallel distributed processing of large corpus of text. First things first, you should select a dataset for your work. Open-source text corpora are collections of texts that are freely available for public use, modification, and distribution. These corpora are typically released under open licenses that allow researchers, developers, and linguists to access, study, and use them for various purposes, such as natural language processing (NLP), machine learning, language modeling, and linguistic analysis. I recommend that you choose your text corpus from the following datasets.
+Your homework assignment is to create a program for parallel distributed processing of a large corpus of text. First things first, you should select a dataset for your work. Open-source text corpora are collections of texts that are freely available for public use, modification, and distribution. These corpora are typically released under open licenses that allow researchers, developers, and linguists to access, study, and use them for various purposes, such as natural language processing (NLP), machine learning, language modeling, and linguistic analysis. I recommend that you choose your text corpus from the following datasets, however, students can choose whatever dataset they like.
 
 * [OpenWebText2](https://openwebtext2.readthedocs.io/en/latest/) contains Reddit submissions from 2005 up until April 2020;
 * [Common Crawl](https://commoncrawl.org/) is a massive corpus of web pages crawled from the internet, widely used for NLP tasks;
@@ -31,15 +31,28 @@ Your homework assignment is to create a program for parallel distributed process
 * [Project Gutenberg](https://www.gutenberg.org/) contains a large collection of public domain books, often used for text mining and NLP research;
 * [OpenSubtitles](https://www.opensubtitles.com/) is a dataset of movie subtitles in multiple languages, useful for tasks like machine translation and dialogue modeling.
 
-Of course, many datasets are too large for a homework and may require significant computational resources, so students should carve a manageable subset of the data. Previous experiments show that it is possible to build a useful LLM with ten Gb of data depending on the quality of the data.
+Of course, many datasets are too large for a homework and may require significant computational resources, so students should carve a manageable subset of the data. Previous experiments show that it is possible to build a useful LLM with ten gigabytes of data depending on the quality of the data.
 
 The main steps of this homework are the following. First, you split the initial text corpus in shards for parallel processing. The size of the shard can be chosen experimentally. Next, for each shard you will convert the text into numerical tokens using the [Byte Pair Encoding (BPE) JTokkit](https://github.com/knuddelsgmbh/jtokkit?tab=readme-ov-file) as it is shown in the image from the LLM book below. You can decide how to handle special context tokens.
 
 ![img.png](img.png)
 
-Next, you need to compute the sliding window data samples with the input shifted by one as shown in the example image below. These data samples are based on the tokenized output from the previous step and they contain training data for predicting the final token given a number of previously occuring tokens, e.g., the word *learn* can be predicted by the previous occurence of the word *LLM*.
+Next, you need to compute the sliding window data samples with the input shifted by one as shown in the example image below. These data samples are based on the tokenized output from the previous step and they contain training data for predicting the final token given a number of previously occuring tokens, e.g., the word *learn* can be predicted by the previous occurence of the word *LLM*. In general, for certain types of embeddings or models, the sliding window is not necessary: if your task is to map individual tokens to vectors without considering their context (e.g., one-hot encoding), you don’t need a sliding window. However, our task is to construct LLM models where we do consider the context! In the context of the first homework the sliding window is superfluous, but we will require it in the next homework
 
 ![img_1.png](img_1.png)
+
+The sliding window algorithm in the context of large language models (LLMs) works to handle long texts that exceed the model's maximum token limit by processing the text in chunks. Here's how it typically functions:
+1. Define the Window Size: The model has a maximum number of tokens it can process in one go, say 1024 tokens.
+2. Initialize the Window: The first window covers the first 1024 tokens of the input text.
+3. Process the Initial Window: The model processes this window to generate output or extract information.
+4. Sliding the Window: After processing, the window "slides" forward by a certain number of tokens, typically with some overlap to maintain context. For example, it might move forward by 512 tokens, meaning the next window will cover tokens 513 to 1536.
+5. Repeat Until End: This process continues until the window reaches the end of the text.
+
+If the text length is shorter than the maximum token limit, or when the sliding window reaches the end of the text, there are no more tokens to fill the window. Here's how it works:
+1. Incomplete Final Window: If there aren't enough tokens left to fill the window completely, the final window may contain fewer tokens than the initial window size. The model processes whatever data remains in this window.
+2. Stop Condition: The algorithm detects that there are no more tokens to include in the next window and stops processing. This prevents any further sliding or unnecessary computations.
+3. Handling Edge Cases: In cases where the last chunk of text is crucial for context (like summarization or continuation tasks), the overlap between windows ensures that the model retains context from the previous segment, even when the last window is smaller.
+In essence, when there is no more data to slide, the algorithm concludes its processing as it has covered the entire input text.
 
 In the context of constructing an LLM, a [tensor](https://en.wikipedia.org/wiki/Tensor) is a fundamental data structure used to represent multi-dimensional arrays of data. Tensors generalize matrices (2D arrays) to higher dimensions, and are key components in the field of machine learning, particularly in the implementation of neural networks, including LLMs like GPT models. The term [matrix](https://en.wikipedia.org/wiki/Matrix_(mathematics)) is not sufficient since we need to work with data that has more than two dimensions. Matrices are limited to 2D arrays, meaning they have rows and columns. However, in many machine learning and deep learning applications like the one we are creating in this course, especially in neural networks like those used in LLMs, the data is inherently multi-dimensional, requiring more than just rows and columns to represent it. This is where the term tensor becomes necessary.
 
@@ -66,7 +79,9 @@ For example, the words "king" and "queen" would have similar but distinct embedd
 
 ![img_2.png](img_2.png)
 
-Initially, all embeddings are given random values/weights and these weights will be updated later as part of the learning/training process using neural networks with the backpropagation learning algorithm. It is assumed that the vocabulary size of your dataset could be at least a few thousand words and the number of the output embedding dimensions can be determined experimentally, e.g., three dimensions may be a very small and unrealistic number whereas choosing millions of dimensions may be computationally prohibitive for this homework. In Deeplearning4j you can compute token embeddings using [Word2Vec](https://en.wikipedia.org/wiki/Word2vec) or other embedding models. Below are the steps shown in Java-like pseudocode compiled from various published programs to compute token embeddings using Word2Vec in Deeplearning4j. [Goldman Sacks](https://github.com/goldmansachs/MRWord2Vec) published an example of the map/reduce implementation of token embedding and you can study and emulate it. Once the embeddings are computed you can compute lists of semantically related words based on the closeness between their vector embeddings.
+Initially, all embeddings are given random values/weights and these weights will be updated later as part of the learning/training process using neural networks with the backpropagation learning algorithm. It is assumed that the vocabulary size of your dataset could be at least a few thousand words and the number of the output embedding dimensions can be determined experimentally, e.g., three dimensions may be a very small and unrealistic number whereas choosing millions of dimensions may be computationally prohibitive for this homework. Since the goal of this homework is to learn how to use the Map/Reduce model and its Hadoop implementation, we are not striving to optimize the learning pipeline or to achieve a certain precision in the learned values, so highly imprecise results of learning embeddings are Ok.
+
+There are two components of this homework: parallelizing token computation by applying JTokkit to the input data and parallelizing learning vector embeddings. As an example, consider Deeplearning4j library using which you can compute token embeddings with [Word2Vec](https://en.wikipedia.org/wiki/Word2vec) that does not require the conversion of text to integer tokens. Below are the steps shown in Java-like pseudocode compiled from various published programs to compute token embeddings using Word2Vec in Deeplearning4j. [Goldman Sacks](https://github.com/goldmansachs/MRWord2Vec) published an example of the map/reduce implementation of token embedding and you can study and emulate it. Once the embeddings are computed you can compute lists of semantically related words based on the closeness between their vector embeddings.
 
 ```java
 public class Word2VecExample {
@@ -111,14 +126,67 @@ public class Word2VecExample {
     }
 }
 ```
+The example is straightforward: the input data is split across multiple shards and the mapper that implements the Word2Vec model is applied to every shard in parallel to produce the resulting vector embeddings that are averaged in reducers. This is the essence of Goldman Sack's massively parallel implementation, which can be easily criticized because of its inherent imprecision. Yet it shows a way to implement this part of the homework in parallel in the cloud and students may choose the same approach to parallelize learning vector embeddings. Therefore, there are two parts of this homework: M/R Hadoop implementation of text tokenization and then learning vector embeddings using some neural network.
 
-Your goal is to produce files with token embeddings and various statistics about the data. First, you will compute a Yaml or an CSV file that shows the vocabulary as the list of words, their numerical tokens and the frequency of occurences of these words in the text corpus. Second, for each token embedding you can output other tokens/words that are semantically close them it based on the computed vector embeddings. Finally, you will produce an estimate of the optimal number of dimensions based on your experiments. Determining the optimal number of dimensions (also known as the embedding size or latent vector size) in embedding models like Word2Vec in Deeplearning4j involves balancing between capturing enough semantic information and keeping the model computationally efficient. There’s no one-size-fits-all rule, but here are strategies to guide the selection of the optimal number of dimensions, one of which is called a set of word analogy tasks, word similarity tasks, or clustering tasks to see how well the learned vectors capture word relationships. Some datasets like [WordSim-353](https://aclweb.org/aclwiki/WordSimilarity-353_Test_Collection_(State_of_the_art)) or [other datasets](https://github.com/vecto-ai/word-benchmarks) can be used for this purpose.
+The former part is relatively straightforward - based on your design of mappers and reducers you partition the input text corpus into shards keeping their relative position in the text corpus, i.e., if the text document is split into two shards and then the mappers tokenize each shard then the reducers should produce the tokenized version of the input text in the same order of the original text. The latter part involves splitting the resulting list of tokens into shard and running instances of the chosen neural network in parallel as mappers on the input shards to produce vector embeddings that are then fed into reducers that average these vectors. The result is a dimension vector for every token from the input text.
+
+At this point you are free to choose whatever neural network you like for this task. I recommend one of the following: [TensorFlow for Java](https://github.com/tensorflow/java), [DeepLearning4J](https://github.com/deeplearning4j) or [WekaDeepLearning4j](https://deeplearning.cms.waikato.ac.nz/user-guide/nlp/). We show an example below how to learn vector embeddings using DeepLearning4j.
+
+```java
+int[][] tokenizedSentences = {
+    {1, 2, 3, 4},   // Example tokenized sentence 1
+    {2, 3, 4, 5},   // Example tokenized sentence 2
+    {3, 4, 5, 6},   // Example tokenized sentence 3
+    {4, 5, 6, 7},   // Example tokenized sentence 4
+};
+
+int[][] labels = {
+{2, 3, 4, 5},   // Shifted input as labels for example
+{3, 4, 5, 6},
+{4, 5, 6, 7},
+{5, 6, 7, 8},
+};
+
+import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
+import org.deeplearning4j.nn.conf.layers.EmbeddingLayer;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.activations.Activation;
+
+int vocabSize = 10;   // Total number of unique tokens in your vocabulary (e.g., 1-9, plus 0 for padding)
+int embeddingDim = 5; // Size of the embedding vectors
+
+INDArray outputLabels = Nd4j.create(labels);
+INDArray inputFeatures = Nd4j.create(tokenizedSentences);
+
+MultiLayerConfiguration config = new NeuralNetConfiguration.Builder()
+        .list()
+        .layer(new EmbeddingLayer.Builder()
+                .nIn(vocabSize)  // Input size (vocabulary size)
+                .nOut(embeddingDim)  // Output size (embedding dimensions)
+                .activation(Activation.IDENTITY)  // No activation function
+                .build())
+        .build();
+
+MultiLayerNetwork model = new MultiLayerNetwork(config);
+model.init();
+int numEpochs = 100;  // Number of training epochs
+for (int epoch = 0; epoch < numEpochs; epoch++) {
+        model.fit(inputFeatures, outputLabels);
+}
+INDArray embeddings = model.getLayer(0).getParam("W");
+System.out.println("Learned Embeddings:\n" + embeddings);
+```
+
+Your goal is to produce files with token embeddings and various statistics about the data. First, you will compute a Yaml or an CSV file that shows the vocabulary as the list of words, their numerical tokens and the frequency of occurences of these words in the text corpus. Second, for each token embedding you can output other tokens/words that are semantically close them it based on the computed vector embeddings. Finally, you will produce an estimate of the optimal number of dimensions based on your experiments. Determining the optimal number of dimensions (also known as the embedding size or latent vector size) in embedding models involves balancing between capturing enough semantic information and keeping the model computationally efficient. There’s no one-size-fits-all rule, but here are strategies to guide the selection of the optimal number of dimensions, one of which is called a set of word analogy tasks, word similarity tasks, or clustering tasks to see how well the learned vectors capture word relationships. Some datasets like [WordSim-353](https://aclweb.org/aclwiki/WordSimilarity-353_Test_Collection_(State_of_the_art)) or [other datasets](https://github.com/vecto-ai/word-benchmarks) can be used for this purpose.
 
 * Word Analogy: Check how well your embeddings capture relationships like "king" - "man" + "woman" ≈ "queen".
 * Word Similarity: Evaluate cosine similarity between known pairs of words (e.g., "cat" and "dog") and see if their embeddings capture the right degree of similarity.
 
 ### Assignment for the main textbook group
-Your job is to create the mapper and the reducer for each task, explain how they work, and then to implement them and run on the big data graphs that you will generate using your predefined configuration parameters. The output of your map/reduce is a Yaml or an CSV file with token embeddings and the required statistics. The explanation of the map/reduce model is given in the main textbook and covered in class lectures.
+Your job is to create the mapper and the reducer for each task, explain how they work, and then to implement them and run on the text corpus using your predefined configuration parameters. The output of your map/reduce is a Yaml or an CSV file with token embeddings and the required statistics. The explanation of the map/reduce model is given in the main textbook and covered in class lectures.
 
 You will create and run your software application using [Apache Hadoop](http://hadoop.apache.org/), a framework for distributed processing of large data sets across multiple computers (or even on a single node) using the map/reduce model. Next, after creating and testing your map/reduce program locally, you will deploy it and run it on the Amazon Elastic MapReduce (EMR) - you can find plenty of [documentation online](https://aws.amazon.com/emr). You will produce a short movie that documents all steps of the deployment and execution of your program with your narration and you will upload this movie to [youtube](www.youtube.com) and you will submit a link to your movie as part of your submission in the README.md file. To produce a movie, you may use an academic version of [Camtasia](https://www.techsmith.com/video-editor.html) or Zoom or some other cheap/free screen capture technology from the UIC webstore or an application for a movie capture of your choice. The captured web browser content should show your login name in the upper right corner of the AWS application and you should introduce yourself in the beginning of the movie speaking into the camera. The display of your passwords and your credit card numbers should be avoided when possible :-).
 
@@ -143,13 +211,13 @@ As it is mentioned above, you can post questions and replies, statements, commen
 
 
 ## Submission deadline and logistics
-Sunday, September, 29, 2024 at 10PM CST by submitting the link to your homework repo in the Teams Assignments channel. Your submission repo will include the code for the program, your documentation with instructions and detailed explanations on how to assemble and deploy your program along with the results of your program execution, the link to the video and a document that explains these results based on the characteristics and the configuration parameters of your log generator, and what the limitations of your implementation are. Again, do not forget, please make sure that you will give both your TAs and your instructor the read access to your private repository. Your code should compile and run from the command line using the commands **sbt clean compile test** and **sbt clean compile run**. Also, you project should be IntelliJ friendly, i.e., your graders should be able to import your code into IntelliJ and run from there. Use .gitignore to exlude files that should not be pushed into the repo.
+Sunday, September, 29, 2024 at 10PM CST by submitting the link to your homework repo in the Teams Assignments channel. Your submission repo will include the code for the program, your documentation with instructions and detailed explanations on how to assemble and deploy your program along with the results of your program execution, the link to the video and a document that explains these results based on the characteristics and the configuration parameters you chose for your experiments, and what the limitations of your implementation are. Again, do not forget, please make sure that you will give both your TAs and your instructor the read access to your private repository. Your code should compile and run from the command line using the commands **sbt clean compile test** and **sbt clean compile run**. Also, you project should be IntelliJ friendly, i.e., your graders should be able to import your code into IntelliJ and run from there. Use .gitignore to exlude files that should not be pushed into the repo.
 
 
 ## Evaluation criteria
 - the maximum grade for this homework is 15%. Points are subtracted from this maximum grade: for example, saying that 2% is lost if some requirement is not completed means that the resulting grade will be 15%-2% => 13%; if the core homework functionality does not work or it is not implemented as specified in your documentation, your grade will be zero;
 - only some basic map/reduce or CORBA examples from some repos are given and nothing else is done: zero grade;
-- using Python or some other language instead of Scala: 8% penalty;
+- using Python or some other language instead of Scala for the M/R option: 8% penalty;
 - homework submissions for an incorrectly chosen textbook assignment option will be desk-rejected with the grade zero;
 - having less than five unit and/or integration scalatests: up to 10% lost;
 - missing comments and explanations from your program with clarifications of your design rationale: up to 10% lost;
