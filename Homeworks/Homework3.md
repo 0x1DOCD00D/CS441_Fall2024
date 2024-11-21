@@ -27,7 +27,9 @@ Your homework assignment consists of two interlocked parts: first, construct HTT
 ### Mandatory part of the homework for all students
 Your job is to design conversational agents based on LLMs, explain your design and architecture, and then to implement it and to run on the trained LLM as well as [Ollama models](https://ollama.com/library) for the conversational agent for graduate students only. To implement a RESTful service for LLM interactions you can use one of the popular frameworks: [Play](https://www.baeldung.com/scala/play-rest-api) or [Finch/Finagle](https://www.baeldung.com/scala/finch-rest-apis) or [Akka HTTP](https://vikasontech.github.io/post/scala-rest-api-with-akka-http/) or [Scalatra](http://honstain.com/rest-in-a-scalatra-service/). There is a [discussion thread on Reddit](https://www.reddit.com/r/scala/comments/ifz8ji/what_framework_should_i_use_to_build_a_rest_api/) about which framework software engineers prefer to create and maintain RESTful services. Personally, as I discussed in my lectures I like Akka HTTP but students are free to experiment with more than one framework. On a side note it would be very suspicious for your TA and me to see very similar implementations of the service using the same framework that came from different submissions by different students.
 
-Regarding ***client programs to test your RESTful services*** you can implement them as a [Postman](https://www.postman.com/) project or as a [curl](https://curl.se/) command in a shell script or you can write a Scala program that uses [Apache HTTP client library](https://hc.apache.org/httpcomponents-client-5.1.x/). A typical client is a ***Postman*** or a ***curl*** command that submits a query to the microservice that responds to this query with a complete sentence, e.g., query: "how cats express love?" and response sentence: "A slow blink from a cat is like a "cat kiss." When a cat blinks slowly at you, it’s a sign of trust and affection." For a conversational agent that graduate students are required to create the response is submitted automatically to a locally hosted Ollama model as the following query: "how can you respond to the statement "A slow blink from a cat is like a "cat kiss." When a cat blinks slowly at you, it’s a sign of trust and affection."?" to which the Ollama model can issue an example response like the following: "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you.'" The process continues with the conversational client forming another query to the cloud-based microservice: Do you have any comments on "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you.'" to which the response may be the following: "Your response, "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you,'" beautifully captures the essence of a cat's slow blink." and the conversation process goes on like this until some termination condition is reached, e.g., the maximum number of responses or the expired conversation time limit. 
+Regarding ***client programs to test your RESTful services*** you can implement them as a [Postman](https://www.postman.com/) project or as a [curl](https://curl.se/) command in a shell script or you can write a Scala program that uses [Apache HTTP client library](https://hc.apache.org/httpcomponents-client-5.1.x/). A typical client is a ***Postman*** or a ***curl*** command that submits a query to the microservice that responds to this query with a complete sentence, e.g., query: "how cats express love?" and response sentence: "A slow blink from a cat is like a "cat kiss." When a cat blinks slowly at you, it’s a sign of trust and affection." For a conversational agent that graduate students are required to create the response is submitted automatically to a locally hosted Ollama model as the following query: "how can you respond to the statement "A slow blink from a cat is like a "cat kiss." When a cat blinks slowly at you, it’s a sign of trust and affection."?" to which the Ollama model can issue an example response like the following: "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you.'" The process continues with the conversational client forming another query to the cloud-based microservice: Do you have any comments on "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you.'" to which the response may be the following: "Your response, "That makes so much sense! It's like a nonverbal way for them to say, 'I feel safe with you,'" beautifully captures the essence of a cat's slow blink." and the conversation process goes on like this until some termination condition is reached, e.g., the maximum number of responses or the expired conversation time limit.
+
+Of course, due to various limitations some students may not have trained their LLMs well - it means that their models cannot respond with meaningless text completion of the submitted queries. In this case these students can deploy other models of their choice or they can use Amazon Bedrock for their backend LLMs. 
 
 First, you can deploy your program locally to test it. Next, after creating and testing your programs locally, you will deploy it and run it on the AWS. You will produce a short movie that documents all steps of the deployment and execution of your program with your narration and you will upload this movie to [youtube](http://www.youtube.com) and as before you will submit a link to your movie as part of your submission in the README.md file. To produce a movie, you may use an academic version of [Camtasia](https://www.techsmith.com/video-editor.html) or some other cheap/free screen capture technology from the UIC webstore or an application for a movie capture of your choice. The captured web browser content should show your login name in the upper right corner of the AWS application and you should introduce yourself in the beginning of the movie speaking into the camera.
 
@@ -97,6 +99,63 @@ object ConversationalAgent {
 ```
 
 Once completed the last step is to enhance this program to make it an automatic conversational agent. First, you submit an initial query by providing it to the conversational agent from the command line. Once a response is received from a microservice the conversational agent will use the local Ollama model to produce the next query based on the LLM cloud response and the process continues until some termination condition is reached.
+
+## Optional part of the homework for an additional five-point bonus
+### Deploying Application Components in Docker Containers
+
+**Objective**:  
+This assignment aims to teach students how to containerize application components and deploy them using Docker. Students will work on deploying both the client and server parts of their applications within Docker containers, leveraging AWS for the server deployment. A multi-stage build is a Docker feature that allows you to use multiple FROM instructions in a single Dockerfile. Each FROM instruction represents a stage, and you can selectively copy the required files or artifacts from one stage to another. This approach is primarily used to optimize the size and efficiency of the final Docker image by excluding unnecessary files, tools, or dependencies that are only needed during the build process.
+
+You will produce a separate short movie that documents all steps of the deployment and execution of your containerized program with your narration and you will upload this movie to youtube and you will submit a link to your movie as part of your submission in the README.md file specifically highlighting that this is a bonus submission part of the homework. To produce a movie, you may use an academic version of Camtasia or Zoom or some other cheap/free screen capture technology from the UIC webstore or an application for a movie capture of your choice. The captured web browser content should show your login name in the upper right corner of the AWS application and you should introduce yourself in the beginning of the movie speaking into the camera.
+
+**Instructions**:
+
+1. **Containerize the Application**:
+   - **Client Part**:
+     - Create a `Dockerfile` for the client-side application.
+     - Ensure the application runs in a lightweight container.
+     - Use a multi-stage build when applicable to optimize the image size.
+   - **Server Part**:
+     - Create a `Dockerfile` for the server-side application.
+     - Include all necessary dependencies for the server (e.g., runtime environment, libraries, etc.).
+     - Expose the required ports to allow communication.
+
+2. **AWS Deployment**:
+   - **Server Deployment**:
+     - Push the server's Docker image to an AWS container registry e.g., Amazon Elastic Container Registry - ECR.
+     - Deploy the server on an AWS service using the Docker container.
+   - **Client Deployment**:
+     - Host the client part locally or deploy it to AWS as a static website using services like Amazon S3 and CloudFront.
+     - Ensure the client is configured to communicate with the deployed server.
+
+3. **Networking**:
+   - Use Docker Compose to link the client and server parts for local testing.
+   - Configure the client to point to the server's AWS endpoint after deployment.
+
+4. **Testing**:
+   - Verify that both components work together seamlessly:
+     - The client should successfully communicate with the server.
+     - The server should handle requests and send appropriate responses.
+
+5. **Submission**:
+   - Submit the following deliverables in your submission repository:
+     - Dockerfiles for both client and server.
+     - Docker Compose configuration file (for local testing).
+     - AWS server endpoint and instructions for accessing the deployed application.
+     - A short report describing the process, challenges faced, and how they were resolved.
+
+6. **Grading Criteria**:
+   - Correctness and completeness of the Dockerfiles.
+   - Successful deployment and functionality of both components as shown in your movie.
+   - Proper documentation and explanation in the report.
+   - Efficiency and optimization of the Docker images.
+
+---
+
+**Prerequisites**:  
+- Basic understanding of Docker and containerization.
+- Familiarity with AWS services and deployment workflows.
+- Working application with clearly separated client and server parts.
 
 ## Baseline Submission
 Your baseline project submission should include your implementation, a conceptual explanation in the document or in the comments in the source code of how your LLM processing components work, and the documentation that describe the build and runtime process, to be considered for grading. Your should use [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) for your project's Readme.md. Your project submission should include all your source code as well as non-code artifacts (e.g., configuration files), your project should be buildable using the SBT, and your documentation must specify how you paritioned the data and what input/outputs are.
